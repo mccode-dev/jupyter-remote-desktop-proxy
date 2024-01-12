@@ -57,7 +57,7 @@ RUN cd /opt/install && \
     # Configure McStasScript for use with installed McStas
     export MCSTAS_BINDIR=`mcrun --showcfg=bindir` && \
     export MCSTAS_COMPDIR=`mcrun --showcfg=resourcedir` && \
-    export MCSTAS_TOOLDIR=`mcrun --showcfg=toolbar` && \
+    export MCSTAS_TOOLDIR=`mcrun --showcfg=tooldir` && \
     sed -i 's+MCSTAS_BINDIR+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
     sed -i 's+MCSTAS_COMPDIR+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
     sed -i 's+NeXus+NeXus\ -L/opt/conda/lib\ -I/opt/conda/include/nexus+g' ${MCSTAS_TOOLDIR}/Python/mccodelib/mccode_config.json && \
