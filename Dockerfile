@@ -54,8 +54,8 @@ RUN cd /opt/install && \
     # Configure McStasScript for use with installed McStas
     export MCSTAS_BINDIR=`mcrun --showcfg=bindir` && \
     export MCSTAS_COMPDIR=`mcrun --showcfg=resourcedir` && \
-    sed -i 's+@MCSTAS_BINDIR@+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
-    sed -i 's+@MCSTAS_COMPDIR@+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
+    sed -i 's+MCSTAS_BINDIR+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
+    sed -i 's+MCSTAS_COMPDIR+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
     find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \; && \
     # Run mcdoc, installed via conda
     /opt/conda/bin/mcdoc -i
