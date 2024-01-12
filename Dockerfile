@@ -58,3 +58,4 @@ RUN cd /opt/install && \
     find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \; && \
     # Run mcdoc, installed via conda
     /opt/conda/bin/mcdoc -i
+    
