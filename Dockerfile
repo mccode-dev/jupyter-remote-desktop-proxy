@@ -2,23 +2,42 @@ FROM quay.io/jupyter/base-notebook:latest
 
 USER root
 
+# Add a non-snap Firefox through pinning, add MPI, NeXus and useful desktop utils
 RUN apt-get -y -qq update \
- && apt-get -y -qq install \
-        dbus-x11 \
+ && apt-get -y -qq install -y software-properties-common && add-apt-repository ppa:mozillateam/ppa \
+ && echo 'Package: *' > /etc/apt/preferences.d/mozilla-firefox \
+ && echo Pin: release o=LP-PPA-mozillateam >> /etc/apt/preferences.d/mozilla-firefox \
+ && echo Pin-Priority: 1001 >> /etc/apt/preferences.d/mozilla-firefox \
+ && apt-get install -y dbus-x11 \
         xfce4 \
         xfce4-panel \
         xfce4-session \
         xfce4-settings \
         xorg \
         xubuntu-icon-theme \
+        tilix fonts-ubuntu xfonts-base xfonts-scalable \
         tigervnc-standalone-server \
         tigervnc-xorg-extension \
+        view3dscene \
+        xdg-utils \
+        gedit \
+        gedit-plugins \
+        evince \
+        gnuplot \
+        octave \
+        libopenmpi-dev \
+        libnexus1 \
+        libnexus-dev \
+        git \
+        firefox \
+    # Remove screenlock
+ && apt-get remove -y -qq light-locker xfce4-screensaver \
     # chown $HOME to workaround that the xorg installation creates a
     # /home/jovyan/.cache directory owned by root
     # Create /opt/install to ensure it's writable by pip
  && mkdir -p /opt/install \
  && chown -R $NB_UID:$NB_GID $HOME /opt/install \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* 
 
 USER $NB_USER
 
@@ -27,4 +46,6 @@ COPY --chown=$NB_UID:$NB_GID environment.yml setup.py MANIFEST.in README.md LICE
 
 RUN cd /opt/install && \
     . /opt/conda/bin/activate && \
-    mamba env update --quiet --file environment.yml
+    mamba env update --quiet --file environment.yml && \
+    # Run mcdoc, installed via conda
+    /opt/conda/bin/mcdoc -i
