@@ -55,6 +55,6 @@ RUN cd /opt/install && \
     export MCSTAS_COMPDIR=`mcrun --showcfg=resourcedir` && \
     sed -i 's+@MCSTAS_BINDIR@+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
     sed -i 's+@MCSTAS_COMPDIR@+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
-    find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \;
+    find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \; && \
     # Run mcdoc, installed via conda
     /opt/conda/bin/mcdoc -i
