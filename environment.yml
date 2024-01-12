@@ -8,6 +8,7 @@ channels:
 dependencies:
   - jupyter-server-proxy>=1.4
   - jupyterlab
+  - jupytext
   - ipympl
   - mcstas
   - mcpl
