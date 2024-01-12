@@ -13,7 +13,13 @@ dependencies:
   - mcstas
   - mcpl
   - ncrystal
+  - make
+  - compilers
   - openmpi=4
+  - nexusformat
+  - nexpy
+  - hdf5
+  - cmake
   - pip
   - websockify
   - pip:

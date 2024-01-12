@@ -2,7 +2,7 @@ FROM quay.io/jupyter/base-notebook:latest
 
 USER root
 
-# Add a non-snap Firefox through pinning, add MPI, NeXus and useful desktop utils
+# Add a non-snap Firefox through pinning + other useful desktop utils
 RUN apt-get -y -qq update \
  && apt-get -y -qq install -y software-properties-common && add-apt-repository ppa:mozillateam/ppa \
  && echo 'Package: *' > /etc/apt/preferences.d/mozilla-firefox \
@@ -25,9 +25,6 @@ RUN apt-get -y -qq update \
         evince \
         gnuplot \
         octave \
-	libopenmpi-dev \
-        libnexus1 \
-        libnexus-dev \
         git \
         firefox \
     # Remove screenlock
@@ -51,6 +48,12 @@ RUN cd /opt/install && \
     # Include scipp in base env
     wget https://scipp.github.io/_downloads/e85d8706af3fe2e161bf9b5ed34bd8ae/scipp.yml && \
     mamba env update --quiet --file scipp.yml && \
+    # Build NeXus using conda
+    git clone https://github.com/nexusformat/code nexus-code && \
+    cd nexus-code && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} .. && make && make install && \
+    cd /opt/install && \
     # Configure McStasScript for use with installed McStas
     export MCSTAS_BINDIR=`mcrun --showcfg=bindir` && \
     export MCSTAS_COMPDIR=`mcrun --showcfg=resourcedir` && \
