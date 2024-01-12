@@ -61,6 +61,7 @@ RUN cd /opt/install && \
     sed -i 's+MCSTAS_BINDIR+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
     sed -i 's+MCSTAS_COMPDIR+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
     sed -i 's+NeXus+NeXus\ -L/opt/conda/lib\ -I/opt/conda/include/nexus+g' ${MCSTAS_TOOLDIR}/Python/mccodelib/mccode_config.json && \
+    sed -i 's+\$\{CONDA_PREFIX\}+/opt/conda+g' ${MCSTAS_TOOLDIR}/Python/mccodelib/mccode_config.json && \
     find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \; && \
     # Run mcdoc, installed via conda
     /opt/conda/bin/mcdoc -i
