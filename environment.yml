@@ -13,6 +13,7 @@ dependencies:
   - mcstas
   - mcpl
   - ncrystal
+  - openmpi=4
   - pip
   - websockify
   - pip:
