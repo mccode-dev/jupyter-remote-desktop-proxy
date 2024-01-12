@@ -43,7 +43,7 @@ USER $NB_USER
 
 COPY --chown=$NB_UID:$NB_GID jupyter_remote_desktop_proxy /opt/install/jupyter_remote_desktop_proxy
 COPY --chown=$NB_UID:$NB_GID environment.yml setup.py MANIFEST.in README.md LICENSE /opt/install/
-COPY --chown=$NB_UID:$NB_GID McStasScript setup.py MANIFEST.in README.md LICENSE /opt/install/McStasScript
+COPY --chown=$NB_UID:$NB_GID McStasScript /opt/install/McStasScript
 
 RUN cd /opt/install && \
     . /opt/conda/bin/activate && \
