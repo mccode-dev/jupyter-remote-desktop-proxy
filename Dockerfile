@@ -25,6 +25,7 @@ RUN apt-get -y -qq update \
         evince \
         gnuplot \
         octave \
+	libopenmpi-dev \
         libnexus1 \
         libnexus-dev \
         git \
