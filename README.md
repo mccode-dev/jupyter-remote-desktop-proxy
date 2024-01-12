@@ -1,6 +1,6 @@
 # Jupyter McStas Desktop Proxy
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-mcstas-desktop?urlpath=desktop)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-mcstas-desktop/master?urlpath=desktop)
 
 [McStas](http://mcstas.org/) neutron beam-line simulations in a "free" computer at Binder.
 
