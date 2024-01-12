@@ -47,5 +47,8 @@ COPY --chown=$NB_UID:$NB_GID environment.yml setup.py MANIFEST.in README.md LICE
 RUN cd /opt/install && \
     . /opt/conda/bin/activate && \
     mamba env update --quiet --file environment.yml && \
+    # Include scipp in base env
+    wget https://scipp.github.io/_downloads/e85d8706af3fe2e161bf9b5ed34bd8ae/scipp.yml && \
+    mamba env update --quiet --file scipp.yml && \
     # Run mcdoc, installed via conda
     /opt/conda/bin/mcdoc -i
