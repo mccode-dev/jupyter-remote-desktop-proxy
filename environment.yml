@@ -7,8 +7,14 @@ channels:
   - conda-forge
 dependencies:
   - jupyter-server-proxy>=1.4
-  - jupyterhub-singleuser
+  - jupyterlab
+  - ipympl
+  - mcstas
+  - mcpl
+  - ncrystal
   - pip
   - websockify
   - pip:
+      - McStasScript
+      - guide_bot
       - .
