@@ -1,0 +1,7 @@
+other:
+  characters_per_line: 85
+paths:
+  mcrun_path: @MCSTAS_BINDIR@/
+  mcstas_path: @MCSTAS_COMPDIR@/
+  mcxtrace_path: @MCXTRACE_BINDIR@/
+  mxrun_path: @MCXTRACE_COMPDIR@/
