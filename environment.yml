@@ -1,6 +1,20 @@
 channels:
   - conda-forge
 dependencies:
-  - jupyter-server-proxy>=4.3.0
-  - jupyterhub-singleuser
+  - jupyter-server-proxy>=1.4
   - pip
+  - websockify
+  - jupytext
+  - nodejs
+  - mcstas=3.5.1
+  - mcxtrace=3.5.1
+  - xraylib
+  - ncrystal
+  - mcpl
+  - nexus
+  - openmpi
+  - nbgitpuller
+  - pip:
+      - McStasScript
+      - guide_bot
+      - .
