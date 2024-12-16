@@ -17,7 +17,7 @@ You may also access the system by means of JupyterLab, use https://mybinder.org/
 
 You may also run this container by means of a local Docker, podman or equivalent installation:
 
-```podman run -p 8888:8888 docker.io/mccode/mcstas-3.4```
+```podman run -p 8888:8888 docker.io/mccode/mcstas-mcxtrace```
 
 McStas 3.4 (with revised grammar, compilation and performance effiiency) is installed, along with the [McStasScript](https://github.com/PaNOSC-ViNYL/McStasScript) python interface. You are welcome to use MPI clustering to distribute the computations over all CPU cores. There is however no GPU support for the 3.x release.
 
