@@ -1,68 +1,81 @@
-FROM quay.io/jupyter/base-notebook:latest
+FROM quay.io/jupyter/base-notebook@sha256:116c6982d52b25e5cdd459c93bb624718ecb2f13c603e72001a6bf8b85468a00
 
 USER root
 
-# Add a non-snap Firefox through pinning + other useful desktop utils
-RUN apt-get -y -qq update \
- && apt-get -y -qq install -y software-properties-common && add-apt-repository ppa:mozillateam/ppa \
- && echo 'Package: *' > /etc/apt/preferences.d/mozilla-firefox \
- && echo Pin: release o=LP-PPA-mozillateam >> /etc/apt/preferences.d/mozilla-firefox \
- && echo Pin-Priority: 1001 >> /etc/apt/preferences.d/mozilla-firefox \
- && apt-get install -y dbus-x11 \
-        xfce4 \
-        xfce4-panel \
-        xfce4-session \
-        xfce4-settings \
-        xorg \
-        xubuntu-icon-theme \
-        tilix fonts-ubuntu xfonts-base xfonts-scalable \
-        tigervnc-standalone-server \
-        tigervnc-xorg-extension \
-        view3dscene \
-        xdg-utils \
-        gedit \
-        gedit-plugins \
-        evince \
-        gnuplot \
-        octave \
-        git \
-        firefox \
-    # Remove screenlock
- && apt-get remove -y -qq light-locker xfce4-screensaver \
+RUN apt-get -y -qq update && apt-get -y -qq install software-properties-common && add-apt-repository ppa:mozillateam/ppa \
+&& echo 'Package: *' > /etc/apt/preferences.d/mozilla-firefox \
+&& echo Pin: release o=LP-PPA-mozillateam >> /etc/apt/preferences.d/mozilla-firefox \
+&& echo Pin-Priority: 1001 >> /etc/apt/preferences.d/mozilla-firefox \
+&& apt-get install -y dbus-x11 \
+   # xclip is added as jupyter-remote-desktop-proxy's tests requires it
+   xclip \
+   xfce4 \
+   xfce4-panel \
+   xfce4-session \
+   xfce4-settings \
+   xorg \
+   xubuntu-icon-theme \
+   fonts-dejavu \
+   view3dscene \
+   python3-pyqt5 \
+   xdg-utils \
+   gedit \
+   gedit-plugins \
+   evince \
+   gnuplot \
+   octave \
+   git \
+   firefox \
+    # Disable the automatic screenlock since the account password is unknown
+ && apt-get -y -qq remove xfce4-screensaver \
     # chown $HOME to workaround that the xorg installation creates a
     # /home/jovyan/.cache directory owned by root
     # Create /opt/install to ensure it's writable by pip
  && mkdir -p /opt/install \
  && chown -R $NB_UID:$NB_GID $HOME /opt/install \
- && rm -rf /var/lib/apt/lists/* 
+ && apt-get -y -qq clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install a VNC server, either TigerVNC (default) or TurboVNC
+ARG vncserver=tigervnc
+RUN if [ "${vncserver}" = "tigervnc" ]; then \
+        echo "Installing TigerVNC"; \
+        apt-get -y -qq update; \
+        apt-get -y -qq install \
+            tigervnc-standalone-server \
+        ; \
+        rm -rf /var/lib/apt/lists/*; \
+    fi
+ENV PATH=/opt/TurboVNC/bin:$PATH
+RUN if [ "${vncserver}" = "turbovnc" ]; then \
+        echo "Installing TurboVNC"; \
+        # Install instructions from https://turbovnc.org/Downloads/YUM
+        wget -q -O- https://packagecloud.io/dcommander/turbovnc/gpgkey | \
+        gpg --dearmor >/etc/apt/trusted.gpg.d/TurboVNC.gpg; \
+        wget -O /etc/apt/sources.list.d/TurboVNC.list https://raw.githubusercontent.com/TurboVNC/repo/main/TurboVNC.list; \
+        apt-get -y -qq update; \
+        apt-get -y -qq install \
+            turbovnc \
+        ; \
+        rm -rf /var/lib/apt/lists/*; \
+    fi \
+  && apt-get -y -qq clean \
+  && rm -rf /var/lib/apt/lists/*
+
+ADD . /opt/install
+RUN cd /opt/install && \
+    fix-permissions /opt/install 
 
 USER $NB_USER
 
-COPY --chown=$NB_UID:$NB_GID jupyter_remote_desktop_proxy /opt/install/jupyter_remote_desktop_proxy
-COPY --chown=$NB_UID:$NB_GID environment.yml setup.py MANIFEST.in README.md LICENSE /opt/install/
-COPY --chown=$NB_UID:$NB_GID McStasScript /opt/install/McStasScript
-
 RUN cd /opt/install && \
-    . /opt/conda/bin/activate && \
-    mamba env update --quiet --file environment.yml && \
-    # Include scipp in base env
-    wget https://scipp.github.io/_downloads/e85d8706af3fe2e161bf9b5ed34bd8ae/scipp.yml && \
-    mamba env update --quiet --file scipp.yml && \
-    # Build NeXus using conda
-    git clone https://github.com/nexusformat/code nexus-code && \
-    cd nexus-code && \
-    mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} .. && make && make install && \
-    cd /opt/install && \
-    # Configure McStasScript for use with installed McStas
-    export MCSTAS_BINDIR=`mcrun --showcfg=bindir` && \
-    export MCSTAS_COMPDIR=`mcrun --showcfg=resourcedir` && \
-    export MCSTAS_TOOLDIR=`mcrun --showcfg=tooldir` && \
-    sed -i 's+MCSTAS_BINDIR+'"${MCSTAS_BINDIR}"'+g' McStasScript/configuration.yaml && \
-    sed -i 's+MCSTAS_COMPDIR+'"${MCSTAS_COMPDIR}"'+g' McStasScript/configuration.yaml && \
-    sed -i 's+NeXus+NeXus\ -L/opt/conda/lib\ -I/opt/conda/include/nexus\ -Wl,-rpath,/opt/conda/lib\ -lhdf5\ -lz\ -lsz\ -lcrypto\ -lcurl+g' ${MCSTAS_TOOLDIR}/Python/mccodelib/mccode_config.json && \
-    sed -i 's+\${CONDA_PREFIX}+/opt/conda+g' ${MCSTAS_TOOLDIR}/Python/mccodelib/mccode_config.json && \
-    find /opt/conda/lib -type d -name mcstasscript -exec cp McStasScript/configuration.yaml \{\} \; && \
-    # Run mcdoc, installed via conda
-    /opt/conda/bin/mcdoc -i
-    
+   mamba env update -n base --file environment.yml && \
+   mamba clean -all -y && /opt/conda/bin/mcdoc -i && /opt/conda/bin/mxdoc -i
+
+COPY --chown=$NB_UID:$NB_GID McStasScript/configuration.yaml /tmp
+
+RUN find /opt/conda/lib/ -type d -name mcstasscript -exec cp /tmp/configuration.yaml \{\} \;
+
+RUN . /opt/conda/bin/activate && \
+    pip install /opt/install
+

@@ -1,27 +1,20 @@
-# Unfortunately the version of websockify on PyPI doesn't include the [compiled
-# wrapper library](https://github.com/novnc/websockify#wrap-a-program) which is
-# used by this extension, so either you'd have to manually compile it after pip
-# installing websockify, or use the conda package.
-#
 channels:
   - conda-forge
 dependencies:
   - jupyter-server-proxy>=1.4
-  - jupyterlab
-  - jupytext
-  - ipympl
-  - mcstas
-  - mcpl
-  - ncrystal
-  - make
-  - compilers
-  - openmpi=4
-  - nexusformat
-  - nexpy
-  - hdf5
-  - cmake
   - pip
   - websockify
+  - jupytext
+  - nodejs
+  - mcstas=3.5.16
+  - mcxtrace=3.5.16
+  - rsync
+  - xraylib
+  - ncrystal
+  - mcpl
+  - nexus
+  - openmpi
+  - nbgitpuller
   - pip:
       - McStasScript
       - guide_bot

@@ -11,7 +11,7 @@
 repos:
   # Autoformat: Python code, syntax patterns are modernized
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.0
+    rev: v3.16.0
     hooks:
       - id: pyupgrade
         args:
@@ -19,7 +19,7 @@ repos:
 
   # Autoformat: Python code
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.1
+    rev: v2.3.1
     hooks:
       - id: autoflake
         # args ref: https://github.com/PyCQA/autoflake#advanced-usage
@@ -34,7 +34,7 @@ repos:
 
   # Autoformat: Python code
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.4.2
     hooks:
       - id: black
 
@@ -46,7 +46,7 @@ repos:
 
   # Misc...
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     # ref: https://github.com/pre-commit/pre-commit-hooks#hooks-available
     hooks:
       # Autoformat: Makes sure files end in a newline and only a newline.
@@ -64,13 +64,18 @@ repos:
 
   # Lint: Python code
   - repo: https://github.com/PyCQA/flake8
-    rev: "6.1.0"
+    rev: "7.1.0"
     hooks:
       - id: flake8
 
-# Content here is mostly copied from other locations, so lets not make
-# formatting changes in it.
-exclude: share
+  # Lint: JS code
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.56.0" # Use the sha / tag you want to point at
+    hooks:
+      - id: eslint
+        files: \.jsx?$
+        types: [file]
+        exclude: jupyter_remote_desktop_proxy/static/dist
 
 # pre-commit.ci config reference: https://pre-commit.ci/#configuration
 ci:
