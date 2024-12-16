@@ -8,7 +8,7 @@
 
 ## Usage
 
-Click on the Binder Badge above or https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-mcstas-desktop/main?urlpath=desktop
+Click on the Binder Badge above or https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-mcstas-mcxtrace-desktop/main?urlpath=desktop
 
 A full desktop, running at Binder for free, will appear in your browser after e.g. a few minutes (be patient).
 The [McStas](http://mcstas.org/) software is available by opening a terminal and executing the command ```mcgui```.
