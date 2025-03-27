@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:2025-01-28
+FROM quay.io/jupyter/base-notebook:2025-03-14
 
 USER root
 
@@ -47,6 +47,8 @@ RUN if [ "${vncserver}" = "tigervnc" ]; then \
         rm -rf /var/lib/apt/lists/*; \
     fi
 ENV PATH=/opt/TurboVNC/bin:$PATH
+ENV MAMBA_ROOT_PREFIX=/opt/conda
+
 RUN if [ "${vncserver}" = "turbovnc" ]; then \
         echo "Installing TurboVNC"; \
         # Install instructions from https://turbovnc.org/Downloads/YUM
