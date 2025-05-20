@@ -1,6 +1,6 @@
 # Jupyter Remote Desktop Proxy - McStas McXtrace flavor
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mccode-dev/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mccode-dev/jupyter-mcstas-mcxtrace-desktop/HEAD?urlpath=desktop)
 
 Run XFCE environment with McStas/McXtrace on Jupyter.
 
