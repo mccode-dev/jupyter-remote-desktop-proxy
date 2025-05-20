@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook@sha256:876e3c3e40c4f0a25d3a16223a158a2d582b1ad77ac94269d43a5f6256eb4eec
+FROM quay.io/jupyter/base-notebook:2025-04-30
 
 USER root
 
@@ -43,11 +43,12 @@ RUN if [ "${vncserver}" = "tigervnc" ]; then \
         apt-get -y -qq update; \
         apt-get -y -qq install \
             tigervnc-standalone-server \
-            tigervnc-xorg-extension \
         ; \
         rm -rf /var/lib/apt/lists/*; \
     fi
 ENV PATH=/opt/TurboVNC/bin:$PATH
+ENV MAMBA_ROOT_PREFIX=/opt/conda
+
 RUN if [ "${vncserver}" = "turbovnc" ]; then \
         echo "Installing TurboVNC"; \
         # Install instructions from https://turbovnc.org/Downloads/YUM
@@ -71,12 +72,13 @@ USER $NB_USER
 
 RUN cd /opt/install && \
    mamba env update -n base --file environment.yml && \
-   mamba clean -all -y
+   mamba clean -all -y && /opt/conda/bin/mcdoc -i && /opt/conda/bin/mxdoc -i
 
 COPY --chown=$NB_UID:$NB_GID McStasScript/configuration.yaml /tmp
 
 RUN find /opt/conda/lib/ -type d -name mcstasscript -exec cp /tmp/configuration.yaml \{\} \;
 
 RUN . /opt/conda/bin/activate && \
+    mamba install -y -q "nodejs>=22" && \
     pip install /opt/install
 

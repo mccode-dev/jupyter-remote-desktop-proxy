@@ -24,17 +24,21 @@ def setup_websockify():
     # - https://github.com/TurboVNC/turbovnc/blob/3.1.1/unix/vncserver.in
     #
     with open(vncserver) as vncserver_file:
-        is_tigervnc = "tigervnc" in vncserver_file.read().casefold()
+        vncserver_file_text = vncserver_file.read().casefold()
+    is_turbovnc = "turbovnc" in vncserver_file_text
 
-    if is_tigervnc:
-        unix_socket = True
+    # {unix_socket} is expanded by jupyter-server-proxy
+    vnc_args = [vncserver, '-rfbunixpath', "{unix_socket}", "-rfbport", "-1"]
+    if is_turbovnc:
+        # turbovnc doesn't handle being passed -rfbport -1, but turbovnc also
+        # defaults to not opening a TCP port which is what we want to ensure
         vnc_args = [vncserver, '-rfbunixpath', "{unix_socket}"]
-    else:
-        unix_socket = False
-        vnc_args = [vncserver, '-localhost', '-rfbport', '{port}']
 
-    if not os.path.exists(os.path.expanduser('~/.vnc/xstartup')):
-        vnc_args.extend(['-xstartup', os.path.join(HERE, 'share/xstartup')])
+    xstartup = os.getenv("JUPYTER_REMOTE_DESKTOP_PROXY_XSTARTUP")
+    if not xstartup and not os.path.exists(os.path.expanduser('~/.vnc/xstartup')):
+        xstartup = os.path.join(HERE, 'share/xstartup')
+    if xstartup:
+        vnc_args.extend(['-xstartup', xstartup])
 
     vnc_command = shlex.join(
         vnc_args
@@ -56,6 +60,6 @@ def setup_websockify():
         # /desktop/ is the user facing URL, while /desktop-websockify/ now *only* serves
         # websockets.
         "launcher_entry": {"title": "Desktop", "path_info": "desktop"},
-        "unix_socket": unix_socket,
+        "unix_socket": True,
         "raw_socket_proxy": True,
     }
