@@ -6,8 +6,10 @@ dependencies:
   - websockify
   - jupytext
   - nodejs
-  - mcstas=3.5.16
-  - mcxtrace=3.5.16
+  - mcstas=3.5.29
+  - mcxtrace=3.5.29
+  - mccode-antlr
+  - mcstasscript
   - rsync
   - xraylib
   - ncrystal
@@ -16,6 +18,4 @@ dependencies:
   - openmpi
   - nbgitpuller
   - pip:
-      - McStasScript
-      - guide_bot
       - .
