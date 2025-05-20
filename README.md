@@ -1,6 +1,6 @@
 # FORK OF Jupyter Remote Desktop Proxy for use in McStas- and McXtrace related containers
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mccode-dev/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop)
 
 Run XFCE (or other desktop environments) and McStas + McXtrace on Jupyter.
 
