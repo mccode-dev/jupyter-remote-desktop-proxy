@@ -1,12 +1,8 @@
-# Jupyter Remote Desktop Proxy
+# Jupyter Remote Desktop Proxy - McStas McXtrace flavor
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop)
-[![Test](https://github.com/jupyterhub/jupyter-remote-desktop-proxy/actions/workflows/test.yaml/badge.svg)](https://github.com/jupyterhub/jupyter-remote-desktop-proxy/actions/workflows/test.yaml)
-[![Latest PyPI version](https://img.shields.io/pypi/v/jupyter-remote-desktop-proxy?logo=pypi)](https://pypi.python.org/pypi/jupyter-remote-desktop-proxy)
-[![Issue tracking - GitHub](https://img.shields.io/badge/issue_tracking-github-blue?logo=github)](https://github.com/jupyterhub/jupyter-remote-desktop-proxy/issues)
-[![Help forum - Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/c/jupyterhub)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mccode-dev/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop)
 
-Run XFCE (or other desktop environments) on Jupyter.
+Run XFCE environment with McStas/McXtrace on Jupyter.
 
 This is based on https://github.com/ryanlovett/nbnovnc.
 
